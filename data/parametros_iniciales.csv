@@ -1,0 +1,7 @@
+parametro,valor,unidad,descripcion
+nivel_contaminacion_inicial,50.0,PPM,Nivel de partida de contaminación en la cuenca del Río Cutuchi
+produccion_mensual_industria,50.0,Unidades,Capacidad operativa del agente industrial
+tasa_vertido_sin_regulacion,0.8,Tasa,Porcentaje de vertido no tratado sin política ambiental
+tasa_vertido_con_regulacion,0.3,Tasa,Porcentaje de vertido tras inversión en ecotecnología por multas
+tarifa_multa_gobierno,2.5,USD/PPM,Sanción económica aplicada por el Agente Gobierno
+tasa_autodepuracion_rio,0.05,Porcentaje,Capacidad natural de regeneración hídrica por periodo

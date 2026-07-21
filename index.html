@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Política Pública Cutuchi & Evaluación de Impacto</title>
+    <title>Dashboard - Política Pública Cuenca del Río Cutuchi</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #2c3e50;
-            --accent: #3498db;
+            --primary: #1e3c72;
+            --accent: #2980b9;
             --success: #27ae60;
+            --warning: #e67e22;
             --bg-color: #f4f6f9;
             --card-bg: #ffffff;
             --text-main: #333333;
@@ -81,31 +82,6 @@
             height: 280px;
             width: 100%;
         }
-        .btn-group {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-        }
-        .btn {
-            display: inline-block;
-            background: var(--accent);
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-        .btn:hover {
-            background: #2980b9;
-        }
-        .btn-secondary {
-            background: #7f8c8d;
-        }
-        .btn-secondary:hover {
-            background: #6c7a89;
-        }
         footer {
             text-align: center;
             padding: 20px;
@@ -117,128 +93,86 @@
 <body>
     <div class="main-container">
         <header>
-            <h1>Dashboard Analítico: Política Pública Cutuchi</h1>
-            <p>Evaluación de impacto econométrico, simulación ambiental y análisis de propensión para la cuenca del río Cutuchi.</p>
+            <h1>Dashboard Hídrico y Ambiental: Río Cutuchi</h1>
+            <p>Evaluación de impacto de políticas públicas, niveles de carga contaminante (PPM) y simulación multiagente en Latacunga.</p>
         </header>
 
         <div class="grid-container">
-            <!-- Gráfico 1: Propensity Score -->
             <div class="card">
                 <div>
-                    <h3>Distribución del Propensity Score</h3>
-                    <p class="desc">Gráfico de densidad construido a partir del puntaje de propensión estimado con variables observables previo al tratamiento. El soporte común identifica el rango de puntajes donde conviven tratados y controles.</p>
+                    <h3>Dinámica de Contaminación (PPM)</h3>
+                    <p class="desc">Evolución mensual de la concentración de efluentes industriales en el río Cutuchi. Compara el escenario base sin regulación frente a la aplicación de normativas ambientales.</p>
                 </div>
                 <div class="chart-box">
-                    <canvas id="propensityChart"></canvas>
+                    <canvas id="cutuchiPollutionChart"></canvas>
                 </div>
             </div>
 
-            <!-- Gráfico 2: Comparación de Ingresos -->
             <div class="card">
                 <div>
-                    <h3>Comparación de Ingresos</h3>
-                    <p class="desc">Comparación de ingresos promedio antes y después del emparejamiento. Este gráfico ilustra la reducción de brechas y el contrafactual construido con nearest neighbor matching.</p>
+                    <h3>Reducción de Carga Contaminante por Sector</h3>
+                    <p class="desc">Comparativa de los niveles de contaminación detectados en puntos clave de monitoreo antes y después de implementar el control de vertidos industriales.</p>
                 </div>
                 <div class="chart-box">
-                    <canvas id="incomeChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid-container">
-            <!-- Notas Metodológicas -->
-            <div class="card">
-                <h3>Notas metodológicas</h3>
-                <p class="desc">El cálculo del Propensity Score se realiza con una especificación de regresión logística utilizando covariables previas al tratamiento. El emparejamiento se define según nearest neighbor para construir un contrafactual de control comparable dentro de la cuenca.</p>
-                <div class="btn-group">
-                    <a href="docs/informe_evaluacion.md" class="btn">Ver Informe de Evaluación</a>
-                </div>
-            </div>
-
-            <!-- Fuentes de datos -->
-            <div class="card">
-                <h3>Fuentes de datos y procesamiento econométrico</h3>
-                <p class="desc">Los gráficos cargan desde scripts de Python y calculan el soporte común y la comparación de ingresos con datos empíricos emparejados. El dashboard procesa indicadores clave orientados a la gestión de políticas públicas ambientales.</p>
-                <div class="btn-group">
-                    <a href="docs/arquitectura_ia.md" class="btn btn-secondary">Ver Arquitectura IA</a>
+                    <canvas id="sectorImpactChart"></canvas>
                 </div>
             </div>
         </div>
 
         <footer>
-            Proyecto de Políticas Públicas - Cuenca del Río Cutuchi | 2026
+            Simulación de Políticas Públicas - Cuenca del Río Cutuchi | 2026
         </footer>
     </div>
 
     <script>
-        // Gráfico de Propensity Score
-        const ctxProp = document.getElementById('propensityChart').getContext('2d');
-        new Chart(ctxProp, {
+        const ctxPollution = document.getElementById('cutuchiPollutionChart').getContext('2d');
+        new Chart(ctxPollution, {
             type: 'line',
             data: {
-                labels: ['0.00-0.10', '0.10-0.20', '0.20-0.30', '0.30-0.40', '0.40-0.50', '0.50-0.60', '0.60-0.70', '0.70-0.80', '0.80-0.90', '0.90-1.00'],
+                labels: ['Mes 1', 'Mes 2', 'Mes 3', 'Mes 4', 'Mes 5', 'Mes 6', 'Mes 7', 'Mes 8', 'Mes 9', 'Mes 10', 'Mes 11', 'Mes 12'],
                 datasets: [
                     {
-                        label: 'Tratados',
-                        data: [0.04, 0.11, 0.17, 0.21, 0.18, 0.14, 0.10, 0.07, 0.04, 0.01],
-                        borderColor: '#3498db',
-                        backgroundColor: 'rgba(52, 152, 219, 0.15)',
+                        label: 'Sin Regulación (Base)',
+                        data: [120, 128, 135, 142, 150, 158, 165, 172, 180, 188, 195, 210],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
                         fill: true,
-                        tension: 0.4
+                        tension: 0.3
                     },
                     {
-                        label: 'Controles',
-                        data: [0.08, 0.16, 0.18, 0.18, 0.15, 0.11, 0.08, 0.05, 0.03, 0.01],
+                        label: 'Con Política Pública',
+                        data: [120, 112, 105, 95, 88, 79, 72, 65, 60, 55, 50, 42],
                         borderColor: '#27ae60',
                         backgroundColor: 'rgba(39, 174, 96, 0.15)',
                         fill: true,
-                        tension: 0.4
+                        tension: 0.3
                     }
                 ]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom' }
-                },
-                scales: {
-                    y: { beginAtZero: true, max: 0.25 }
-                }
-            }
+            options: { responsive: true, maintainAspectRatio: false }
         });
 
-        // Gráfico de Comparación de Ingresos
-        const ctxInc = document.getElementById('incomeChart').getContext('2d');
-        new Chart(ctxInc, {
+        const ctxSector = document.getElementById('sectorImpactChart').getContext('2d');
+        new Chart(ctxSector, {
             type: 'bar',
             data: {
-                labels: ['Antes del emparejamiento', 'Después del emparejamiento'],
+                labels: ['Sector Industrial Norte', 'Zona Urbana Latacunga', 'Zona Sur / Confluencia'],
                 datasets: [
                     {
-                        label: 'Tratados',
-                        data: [52, 55],
-                        backgroundColor: '#3498db',
+                        label: 'Antes de la Política',
+                        data: [180, 145, 160],
+                        backgroundColor: '#e67e22',
                         borderRadius: 4
                     },
                     {
-                        label: 'Contrafactual emparejado',
-                        data: [110, 63],
-                        backgroundColor: '#27ae60',
+                        label: 'Después de la Intervención',
+                        data: [90, 75, 70],
+                        backgroundColor: '#2980b9',
                         borderRadius: 4
                     }
                 ]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom' }
-                },
-                scales: {
-                    y: { beginAtZero: true }
-                }
-            }
+            options: { responsive: true, maintainAspectRatio: false }
         });
     </script>
 </body>
